@@ -1,0 +1,181 @@
+/* iPad only: constrain the app frame to the visible viewport.
+   Keep the desktop renderer and PDF scroll surface intact. */
+html, body {
+  width: 100%;
+  height: 100%;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+body {
+  height: 100vh;
+  height: 100dvh;
+  padding: 0 !important;
+}
+#shell.shell {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100%;
+  grid-template-rows: minmax(0, 1fr);
+  align-items: stretch;
+  overflow: hidden !important;
+}
+#shell > #nav.side {
+  position: relative !important;
+  top: auto;
+  height: 100% !important;
+  min-height: 0;
+  max-height: 100%;
+  align-self: stretch;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+#nav > * { flex-shrink: 0; }
+#shell > main#view {
+  height: 100%;
+  min-height: 0 !important;
+  max-height: 100%;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+@media (max-width: 640px) {
+  #shell.shell { grid-template-columns: min(205px, 36vw) minmax(0, 1fr); }
+  #shell.shell.mini { grid-template-columns: 64px minmax(0, 1fr); }
+}
+/* Explicit centring defeats the desktop universal margin reset on dialog. */
+dialog.ipad-action-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto !important;
+  width: min(420px, calc(100% - 40px));
+  max-width: calc(100% - 40px);
+  height: fit-content;
+  max-height: calc(100% - 40px);
+  padding: 20px;
+  border-radius: 18px;
+  color: var(--fg);
+  overflow: auto;
+  overflow-wrap: anywhere;
+}
+dialog.ipad-action-dialog[open] { display: flex; flex-direction: column; gap: 12px; }
+dialog.ipad-action-dialog .btn { text-align: center; justify-content: center; white-space: normal; }
+dialog.ipad-action-dialog::backdrop { background: rgba(0, 0, 0, .45); }
+
+/* Floating sidebar with a transparent gutter over the same fixed wallpaper.
+   Keep the viewport locked, and reserve the inset within the grid itself. */
+#shell.shell {
+  --ipad-gutter: 12px;
+  max-width: none;
+  margin: 0;
+  padding: max(var(--ipad-gutter), env(safe-area-inset-top)) max(var(--ipad-gutter), env(safe-area-inset-right)) max(var(--ipad-gutter), env(safe-area-inset-bottom)) max(var(--ipad-gutter), env(safe-area-inset-left));
+  background: transparent !important;
+  border: 0;
+  box-shadow: none;
+}
+#shell > #nav.side {
+  border-radius: 24px;
+  padding: 16px 12px;
+  scrollbar-width: none;
+}
+#shell > #nav.side::-webkit-scrollbar { display: none; }
+#shell > main#view {
+  padding: 0 6px 80px 0 !important;
+  background: transparent !important;
+  scrollbar-width: none;
+}
+#shell > main#view::-webkit-scrollbar { display: none; }
+/* Paint the wallpaper as a single viewport layer, including all gutters. */
+body::before { inset: 0; width: 100%; height: 100%; }
+/* Use monochrome vector icons, inheriting the active theme colour. */
+#nav .item i svg { width: 19px; height: 19px; display: block; margin: auto; }
+/* WebKit native date fields have an intrinsic minimum width and inconsistent
+   empty-field height. Keep the native picker, constrain its rendered box. */
+.two > *, label { min-width: 0; }
+input[type="date"], input[type="time"], input[type="datetime-local"], input[type="month"], input[type="week"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  box-sizing: border-box;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: calc(1.4em + 24px);
+  min-height: calc(1.4em + 24px);
+  padding: 11px 14px;
+  margin-inline: 0;
+  overflow: hidden;
+  text-align: left;
+}
+input::-webkit-date-and-time-value { min-width: 0; max-width: 100%; min-height: 1.4em; text-align: left; margin: 0; }
+input::-webkit-datetime-edit { min-width: 0; max-width: 100%; padding: 0; overflow: hidden; }
+input::-webkit-datetime-edit-fields-wrapper { padding: 0; }
+@media (max-width: 640px) { .modal .two { grid-template-columns: minmax(0, 1fr); } }
+
+/* Expand the whole document workspace without moving or remounting its tabs. */
+body.ipad-doc-full #shell { overflow: visible !important; }
+body.ipad-doc-full #shell > #nav, body.ipad-doc-full > .toggle { visibility: hidden !important; }
+body.ipad-doc-full #shell > main#view {
+  animation: none !important; transform: none !important;
+  overflow: visible !important; visibility: hidden;
+}
+body.ipad-doc-full #view .doc-workspace.ipad-doc-expanded {
+  position: fixed !important;
+  inset: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left) !important;
+  width: auto !important; height: auto !important; min-height: 0 !important;
+  max-height: none !important; max-width: none !important;
+  margin: 0 !important; border-radius: 0 !important;
+  grid-template-columns: min(300px, 36vw) minmax(0, 1fr);
+  visibility: visible; z-index: 1000;
+  background: var(--panel);
+}
+body.ipad-doc-full #view .doc-workspace.ipad-doc-expanded.sidebar-collapsed { grid-template-columns: 0 minmax(0, 1fr); }
+.ipad-doc-full-toggle { flex-shrink: 0; font-size: 20px; }
+body.ipad-doc-full .ipad-doc-full-toggle { width: auto; flex: 0 0 auto; padding: 0 10px; font-size: 12px; white-space: nowrap; }
+
+/* Settings-only layout: consistent gaps and existing appearance cards. */
+#view:has(#ipad-maintenance) > section.glass.panel { margin: 0 0 20px; min-width: 0; }
+#view #tarikh-glass-settings-panel h2 { margin: 0; }
+#view #ipad-maintenance .workspace-settings-heading { margin-bottom: 16px; }
+#view #ipad-maintenance .workspace-settings-heading .sub { margin: 0; }
+#ipad-maintenance .ipad-maintenance-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+#ipad-maintenance .ipad-update-card { grid-column: 1 / -1; }
+#ipad-maintenance .appearance-card { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+#ipad-maintenance .appearance-card h3, #ipad-maintenance .appearance-card p { margin: 0; overflow-wrap: anywhere; line-height: 1.5; }
+#ipad-maintenance .appearance-card-actions { margin-top: auto; padding-top: 8px; }
+#ipad-maintenance .appearance-card-actions .btn { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+#ipad-message { margin: 16px 0 0; overflow-wrap: anywhere; }
+#ipad-message:empty { display: none; }
+@media (max-width: 900px) { #ipad-maintenance .ipad-maintenance-grid { grid-template-columns: minmax(0,1fr); } }
+
+
+/* v0.2.23: full-width automatic backup card; scoped Settings spacing. */
+#ipad-maintenance .ipad-auto-card {
+  grid-column: 1 / -1;
+  gap: 12px;
+}
+#ipad-maintenance .ipad-auto-card > .appearance-card-actions {
+  margin-top: 0;
+  padding-top: 2px;
+  gap: 9px;
+  align-items: center;
+}
+#ipad-maintenance #ipad-auto-history {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  min-width: 0;
+}
+#ipad-maintenance #ipad-auto-history:empty { display: none; }
+#ipad-maintenance #ipad-auto-history > .appearance-card {
+  gap: 8px;
+  margin: 0;
+}
+#ipad-maintenance #ipad-auto-history .appearance-card-actions {
+  margin-top: 0;
+  padding-top: 2px;
+  gap: 9px;
+  align-items: center;
+}

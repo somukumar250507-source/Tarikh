@@ -1,0 +1,125 @@
+/* TARIKH: Restore case-list status coding after Liquid Glass ON/OFF.
+   Keep the neutral glass/solid card body; only the left rail and status pill are colour-coded. */
+#view .case-list > .case-tinted-row {
+  --case-accent: #64748b;
+  --case-accent-rgb: 100, 116, 139;
+  border-left: 6px solid var(--case-accent) !important;
+  border-left-color: var(--case-accent) !important;
+}
+#view .case-list > .case-tinted-row.case-card-status-pending {
+  --case-accent: #22c55e;
+  --case-accent-rgb: 34, 197, 94;
+}
+#view .case-list > .case-tinted-row.case-card-status-reserved {
+  --case-accent: #a855f7;
+  --case-accent-rgb: 168, 85, 247;
+}
+#view .case-list > .case-tinted-row.case-card-status-appealed {
+  --case-accent: #eab308;
+  --case-accent-rgb: 234, 179, 8;
+}
+#view .case-list > .case-tinted-row.case-card-status-disposed {
+  --case-accent: #ef4444;
+  --case-accent-rgb: 239, 68, 68;
+}
+
+/* Glass ON: retain translucency and make only a very light colour reflection
+   in the card body. The rail stays vivid. */
+html:not(.tarikh-glass-off) body #view .case-list > .case-tinted-row {
+  background-image: linear-gradient(100deg,
+    rgba(var(--case-accent-rgb), .10),
+    rgba(var(--case-accent-rgb), .018) 32%,
+    transparent 68%) !important;
+  
+  
+  
+}
+html:not(.tarikh-glass-off) body.dark #view .case-list > .case-tinted-row {
+  background-color: rgba(20,30,47,.49) !important;
+}
+html:not(.tarikh-glass-off) body:not(.dark) #view .case-list > .case-tinted-row {
+  background-color: rgba(245,249,255,.52) !important;
+}
+
+/* Glass OFF: allow the existing solid-card override to remain operative,
+   but keep the coloured rail and slightly coloured outline. */
+html.tarikh-glass-off body #view .case-list > .case-tinted-row {
+  border-left-color: var(--case-accent) !important;
+  
+  
+  
+}
+
+/* Colour-coded badges, in both glass states. Black text in light theme,
+   white text in dark theme as requested. */
+body #view .case-list .case-status-tag {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px !important;
+  padding: 6px 12px;
+  font-weight: 600;
+  color: #111827 !important;
+  text-shadow: none !important;
+}
+body.dark #view .case-list .case-status-tag {
+  color: #fff !important;
+}
+body #view .case-list .case-status-tag.case-status-pending {
+  background: rgba(34,197,94,.23) !important;
+  border: 1px solid rgba(34,197,94,.70) !important;
+}
+body #view .case-list .case-status-tag.case-status-reserved {
+  background: rgba(168,85,247,.23) !important;
+  border: 1px solid rgba(168,85,247,.70) !important;
+}
+body #view .case-list .case-status-tag.case-status-appealed {
+  background: rgba(234,179,8,.25) !important;
+  border: 1px solid rgba(234,179,8,.80) !important;
+}
+body #view .case-list .case-status-tag.case-status-disposed {
+  background: rgba(239,68,68,.23) !important;
+  border: 1px solid rgba(239,68,68,.72) !important;
+}
+
+
+
+/* ==============================================
+   TARIKH — FINAL LEFT-RAIL-ONLY CASE STYLING
+   ============================================== */
+
+/* All four sides start with a neutral glass border. */
+html body #view .case-list > .case-tinted-row,
+html body #view .case-list > .case-tinted-row:hover,
+html.tarikh-glass-off body #view .case-list > .case-tinted-row,
+html.tarikh-glass-off body #view .case-list > .case-tinted-row:hover {
+  border-style: solid !important;
+
+  border-top-width: 1px !important;
+  border-right-width: 1px !important;
+  border-bottom-width: 1px !important;
+  border-left-width: 6px !important;
+
+  border-top-color: rgba(170,185,205,0.25) !important;
+  border-right-color: rgba(170,185,205,0.25) !important;
+  border-bottom-color: rgba(170,185,205,0.25) !important;
+
+  /* Only this edge reflects the case status */
+  border-left-color: var(--case-accent) !important;
+
+  outline: none !important;
+}
+
+/* Lighter borders in dark mode */
+html body.dark #view .case-list > .case-tinted-row,
+html body.dark #view .case-list > .case-tinted-row:hover {
+  border-top-color: rgba(235,245,255,0.17) !important;
+  border-right-color: rgba(235,245,255,0.17) !important;
+  border-bottom-color: rgba(235,245,255,0.17) !important;
+}
+
+/* Keep the remaining glass body neutral */
+html:not(.tarikh-glass-off) body #view
+.case-list > .case-tinted-row {
+  background-image: none !important;
+}

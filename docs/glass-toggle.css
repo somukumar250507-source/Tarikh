@@ -1,0 +1,189 @@
+/* Liquid Glass on/off UI */
+#tarikh-glass-settings-panel .tarikh-glass-toggle-line { display:flex; align-items:center; justify-content:space-between; gap:24px; }
+#tarikh-glass-settings-panel .tarikh-glass-toggle-copy { min-width:0; flex:1; }
+#tarikh-glass-settings-panel h2 { margin:0 0 8px; }
+#tarikh-glass-settings-panel .sub { margin:0 0 6px; }
+.tarikh-glass-switch { position:relative; display:inline-flex; align-items:center; flex:0 0 auto; cursor:pointer; width:64px; height:36px; }
+.tarikh-glass-switch input { position:absolute; inset:0; opacity:0; margin:0; width:100%; height:100%; cursor:pointer; z-index:2; }
+.tarikh-glass-switch-track { display:block; width:64px; height:36px; background:#667180; border:1px solid rgba(255,255,255,.28); box-sizing:border-box; border-radius:999px; transition:background .2s; }
+.tarikh-glass-switch-track::before { content:""; display:block; width:28px; height:28px; margin:3px; background:#fff; border-radius:50%; box-shadow:0 2px 8px rgba(0,0,0,.2); transition:transform .2s; }
+.tarikh-glass-switch input:checked + .tarikh-glass-switch-track { background:#2784db; }
+.tarikh-glass-switch input:checked + .tarikh-glass-switch-track::before { transform:translateX(28px); }
+.tarikh-glass-switch input:focus-visible + .tarikh-glass-switch-track { outline:2px solid #429afe; outline-offset:3px; }
+@media (max-width:680px) { #tarikh-glass-settings-panel .tarikh-glass-toggle-line { align-items:flex-start; } }
+
+/* OFF: don't simply remove extra effects, restore opaque, readable surfaces.
+   This follows all prior glass and app CSS files in index.html. */
+html.tarikh-glass-off body :is(.glass, .panel, .card, .line, .task-row, .meeting-card,
+ .note-card, .calendar-day, .page-header-card, .library-case-card, .library-reference-bar,
+ .calendar-provider-card, .appearance-card, .doc-tab-panel, .meetings-empty,
+ .library-unassigned-section, .calendar-agenda, .calendar-detail-item) {
+  -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
+  background-image:none !important;
+  box-shadow:0 2px 10px rgba(15,27,43,.11) !important;
+}
+html.tarikh-glass-off body:not(.dark) :is(.glass, .panel, .card, .line, .task-row,
+ .meeting-card, .note-card, .calendar-day, .page-header-card, .library-case-card,
+ .library-reference-bar, .calendar-provider-card, .appearance-card, .doc-tab-panel,
+ .meetings-empty, .library-unassigned-section, .calendar-agenda, .calendar-detail-item) {
+  background-color:#f0f3f8 !important; border-color:rgba(39,58,80,.20) !important;
+}
+html.tarikh-glass-off body.dark :is(.glass, .panel, .card, .line, .task-row,
+ .meeting-card, .note-card, .calendar-day, .page-header-card, .library-case-card,
+ .library-reference-bar, .calendar-provider-card, .appearance-card, .doc-tab-panel,
+ .meetings-empty, .library-unassigned-section, .calendar-agenda, .calendar-detail-item) {
+  background-color:#1d293a !important; border-color:rgba(255,255,255,.16) !important;
+}
+html.tarikh-glass-off body .btn:not(.pri):not(.danger) {
+  -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
+  background-image:none !important; box-shadow:none !important;
+}
+html.tarikh-glass-off body .case-tinted-row { border-left-width:5px !important; }
+html.tarikh-glass-off body .calendar-day:is(.is-holiday,.is-sunday) { background-color:#693140 !important; }
+html.tarikh-glass-off body:not(.dark) .calendar-day:is(.is-holiday,.is-sunday) { background-color:#f7dce1 !important; }
+html.tarikh-glass-off body .calendar-day-empty { background:transparent !important; border:0 !important; }
+html.tarikh-glass-off body #tarikh-native-wallpaper { display:none !important; }
+html.tarikh-glass-off body { background-attachment:fixed; }
+/* Override older #view selectors that used !important, including Glass V2. */
+html.tarikh-glass-off body #view :is(.card,.line,.panel,.task-row,.meeting-card,.note-card,
+ .calendar-day,.page-header-card,.library-case-card,.library-reference-bar,
+ .calendar-provider-card,.appearance-card,.doc-tab-panel,.meetings-empty,
+ .library-unassigned-section,.calendar-agenda,.calendar-detail-item) {
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+  background-image:none !important;
+  box-shadow:0 2px 10px rgba(15,27,43,.11) !important;
+}
+html.tarikh-glass-off body:not(.dark) #view :is(.card,.line,.panel,.task-row,.meeting-card,
+ .note-card,.calendar-day,.page-header-card,.library-case-card,.library-reference-bar,
+ .calendar-provider-card,.appearance-card,.doc-tab-panel,.meetings-empty,
+ .library-unassigned-section,.calendar-agenda,.calendar-detail-item) {
+  background-color:#f0f3f8 !important;
+}
+html.tarikh-glass-off body.dark #view :is(.card,.line,.panel,.task-row,.meeting-card,
+ .note-card,.calendar-day,.page-header-card,.library-case-card,.library-reference-bar,
+ .calendar-provider-card,.appearance-card,.doc-tab-panel,.meetings-empty,
+ .library-unassigned-section,.calendar-agenda,.calendar-detail-item) {
+  background-color:#1d293a !important;
+}
+html.tarikh-glass-off body #view .calendar-day-empty {background:transparent !important;}
+html.tarikh-glass-off body:not(.dark) #view .calendar-day:is(.is-sunday,.is-holiday) {background-color:#f7dce1 !important;}
+html.tarikh-glass-off body.dark #view .calendar-day:is(.is-sunday,.is-holiday) {background-color:#693140 !important;}
+
+
+/* TARIKH — CALENDAR AGENDA OUTLINE FIX */
+
+/* The agenda is a layout container, not an additional glass card. */
+#view .calendar-agenda,
+html.tarikh-glass-off body #view .calendar-agenda {
+  background: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 !important;
+}
+
+/* Prevent an extra rectangular reflection layer. */
+#view .calendar-agenda::before,
+#view .calendar-agenda::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Retain the rounded glass card for individual events. */
+#view .calendar-agenda > .calendar-detail-item {
+  border-radius: 16px;
+}
+
+
+/* TARIKH — CALENDAR AGENDA SINGLE-CARD FIX */
+
+/* Layout-only wrapper. Never render a second glass surface. */
+#view .calendar-agenda,
+html.tarikh-glass-off body #view .calendar-agenda {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  background: transparent !important;
+  background-image: none !important;
+
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  border-radius: 0 !important;
+  isolation: auto !important;
+}
+
+/* No additional rectangular reflection overlay. */
+#view .calendar-agenda::before,
+#view .calendar-agenda::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Only the actual calendar event receives the glass effect. */
+#view .calendar-agenda > .calendar-detail-item {
+  border-radius: 18px !important;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+
+
+/* Solid welcome card when Liquid Glass is disabled */
+html.tarikh-glass-off body #view .welcome-card {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background-image: none !important;
+  box-shadow: 0 2px 10px rgba(15,27,43,0.11) !important;
+}
+
+html.tarikh-glass-off body:not(.dark) #view .welcome-card {
+  background-color: #f0f3f8 !important;
+}
+
+html.tarikh-glass-off body.dark #view .welcome-card {
+  background-color: #1d293a !important;
+}
+
+html.tarikh-glass-off #view .welcome-card::after {
+  display: none !important;
+}
+
+/* TARIKH — SMOOTH GLASS CROSSFADE */
+
+::view-transition-old(root) {
+  animation: tarikh-glass-fade-out 300ms ease-in-out both;
+}
+
+::view-transition-new(root) {
+  animation: tarikh-glass-fade-in 300ms ease-in-out both;
+}
+
+@keyframes tarikh-glass-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes tarikh-glass-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
